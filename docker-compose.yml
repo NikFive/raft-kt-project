@@ -1,0 +1,87 @@
+services:
+  node_one:
+    image: kvex:latest
+    container_name: node_one
+    environment:
+      ID: "50"
+      PORT: "4000"
+      NODES: "51:192.168.0.6:4000,52:192.168.0.7:4000,53:192.168.0.8:4000,54:192.168.0.9:4000"
+      TIMER: "5000"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      default:
+        ipv4_address: 192.168.0.5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  node_two:
+    image: kvex:latest
+    container_name: node_two
+    environment:
+      ID: "51"
+      PORT: "4000"
+      NODES: "50:192.168.0.5:4000,52:192.168.0.7:4000,53:192.168.0.8:4000,54:192.168.0.9:4000"
+      TIMER: "6000"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      default:
+        ipv4_address: 192.168.0.6
+
+  node_three:
+    image: kvex:latest
+    container_name: node_three
+    environment:
+      ID: "52"
+      PORT: "4000"
+      NODES: "50:192.168.0.5:4000,51:192.168.0.6:4000,53:192.168.0.8:4000,54:192.168.0.9:4000"
+      TIMER: "7000"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      default:
+        ipv4_address: 192.168.0.7
+
+  node_four:
+    image: kvex:latest
+    container_name: node_four
+    environment:
+      ID: "53"
+      PORT: "4000"
+      NODES: "50:192.168.0.5:4000,51:192.168.0.6:4000,52:192.168.0.7:4000,54:192.168.0.9:4000"
+      TIMER: "8000"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      default:
+        ipv4_address: 192.168.0.8
+
+  node_five:
+    image: kvex:latest
+    container_name: node_five
+    environment:
+      ID: "54"
+      PORT: "4000"
+      NODES: "50:192.168.0.5:4000,51:192.168.0.6:4000,52:192.168.0.7:4000,53:192.168.0.8:4000"
+      TIMER: "9000"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      default:
+        ipv4_address: 192.168.0.9
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.0.0/24
